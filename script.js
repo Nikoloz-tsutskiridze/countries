@@ -49,16 +49,24 @@ const renderCountry = function (data, className = "") {
 
 // getCountryAndNeighbour("USA");
 
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.com/v2/name/${country}`)
+//     .then(function (response) {
+//       console.log(response);
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//       renderCountry(data[0]);
+//     });
+// };
+
+// getCountryData("georgia");
+
 const getCountryData = function (country) {
-  fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(function (response) {
-      console.log(response);
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      renderCountry(data[0]);
-    });
+  fetch(`https://restcountries.com/v2/name/${country}`).then((Response) =>
+    Response.json().then((data) => renderCountry(data[0]))
+  );
 };
 
 getCountryData("georgia");
