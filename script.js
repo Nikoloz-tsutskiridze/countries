@@ -63,10 +63,36 @@ const renderCountry = function (data, className = "") {
 
 // getCountryData("georgia");
 
+const getPosition = function () {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+
 const getCountryData = function (country) {
   fetch(`https://restcountries.com/v2/name/${country}`).then((Response) =>
     Response.json().then((data) => renderCountry(data[0]))
   );
 };
 
-getCountryData("georgia");
+const whereAmI = async function () {
+  const pos = await getPosition();
+  const { latitude: lat, longitude: lng } = pos.coords;
+
+  const resGeo = await fetch(
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+  );
+
+  const dataGeo = await resGeo.json();
+  console.log(dataGeo);
+
+  const res = await fetch(
+    `https://restcountries.com/v2/name/${dataGeo.countryName}`
+  );
+  const data = await res.json();
+  console.log(data);
+  renderCountry(data[0]);
+};
+
+whereAmI("");
+console.log("FIRST");
